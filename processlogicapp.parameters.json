@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_office365_name": {
+            "value": "office365"
+        },
+        "workflows_infralogicapp_name": {
+            "value": "infralogicapp"
+        },
+        "integrationAccounts_LiquidIntegration_externalid": {
+            "value": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/resourceGroups/test_env/providers/Microsoft.Logic/integrationAccounts/LiquidIntegration"
+        }
+    }
+}

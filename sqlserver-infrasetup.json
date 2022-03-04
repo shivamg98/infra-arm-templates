@@ -1,0 +1,118 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "servers_infrasetupserver_name": {
+            "defaultValue": "infrasetupserver12",
+            "type": "String"
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+         {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[parameters('servers_infrasetupserver_name')]",
+            "location": "eastus",
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "infrauser",
+                "administratorLoginPassword": "metro@12",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/infrasetupdb')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic",
+                "capacity": 5
+            },
+            "kind": "v12.0,user",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 2147483648,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "requestedBackupStorageRedundancy": "Local",
+                "maintenanceConfigurationId": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyName": "ServiceManaged",
+                "serverKeyType": "ServiceManaged",
+                "autoRotationEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/AllowAllWindowsAzureIps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/query-editor-2f5aaf')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "157.35.63.167",
+                "endIpAddress": "157.35.63.167"
+            }
+        },
+         {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/infrasetupdb/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_infrasetupserver_name'), 'infrasetupdb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2021-08-01-preview",
+            "name": "[concat(parameters('servers_infrasetupserver_name'), '/infrasetupdb/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_infrasetupserver_name'), 'infrasetupdb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_infrasetupserver_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        }
+    ],
+    "outputs": {}
+}

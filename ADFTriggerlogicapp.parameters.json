@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_office365_1_name": {
+            "value": "office365-1"
+        },
+        "connections_azuredatafactory_name": {
+            "value": "azuredatafactory"
+        },
+        "workflows_infratriggerlogic_name": {
+            "value": "infratriggerlogic"
+        }
+    }
+}

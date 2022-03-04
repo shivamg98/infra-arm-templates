@@ -1,0 +1,175 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_infralogicapp_name": {
+            "defaultValue": "infralogicapp",
+            "type": "String"
+        },
+        "connections_office365_name": {
+            "defaultValue": "office365",
+            "type": "String"
+        },
+        "integrationAccounts_LiquidIntegration_externalid": {
+            "defaultValue": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/resourceGroups/test_env/providers/Microsoft.Logic/integrationAccounts/LiquidIntegration",
+            "type": "String"
+        }   
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_infralogicapp_name')]",
+            "location": "northcentralus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/connections', parameters('connections_office365_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "integrationAccount": {
+                    "id": "[parameters('integrationAccounts_LiquidIntegration_externalid')]"
+                },
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "items": {
+                                        "properties": {
+                                            "eid": {
+                                                "type": "integer"
+                                            },
+                                            "etimestamp": {
+                                                "type": "string"
+                                            },
+                                            "fname": {
+                                                "type": "string"
+                                            },
+                                            "lname": {
+                                                "type": "string"
+                                            },
+                                            "salary": {
+                                                "type": "integer"
+                                            },
+                                            "stimestamp": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "eid",
+                                            "fname",
+                                            "lname",
+                                            "etimestamp",
+                                            "salary",
+                                            "stimestamp"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Catch": {
+                            "actions": {
+                                "Send_an_email_(V2)_2": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "<p>ERROR LOGIC APP</p>",
+                                            "Subject": "ERROR",
+                                            "To": "shivam.giri@mandelbulbtech.com;nirban.biswas@mandelbulbtech.com"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/Mail"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Try": [
+                                    "TimedOut",
+                                    "Skipped",
+                                    "Failed"
+                                ]
+                            },
+                            "type": "Scope"
+                        },
+                        "Try": {
+                            "actions": {
+                                "Send_an_email_(V2)": {
+                                    "runAfter": {
+                                        "Transform_JSON_to_JSON": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "<p>@{body('Transform_JSON_to_JSON')}</p>",
+                                            "Subject": "Logic App Email",
+                                            "To": "nirban.biswas@mandelbulbtech.com;shivam.giri@mandelbulbtech.com"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/Mail"
+                                    }
+                                },
+                                "Transform_JSON_to_JSON": {
+                                    "runAfter": {},
+                                    "type": "Liquid",
+                                    "kind": "JsonToJson",
+                                    "inputs": {
+                                        "content": "@triggerBody()",
+                                        "integrationAccount": {
+                                            "map": {
+                                                "name": "infraliquid"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "runAfter": {},
+                            "type": "Scope"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "office365": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_office365_name'))]",
+                                "connectionName": "office365",
+                                "id": "/subscriptions/5df527a2-240d-44fe-a163-2488e30b80fb/providers/Microsoft.Web/locations/northcentralus/managedApis/office365"
+                            }
+                        }
+                    }
+                }
+            }
+        }    
+    ],
+    "outputs": {}
+}
