@@ -5,7 +5,7 @@
         "factoryName": {
             "type": "string",
             "metadata": "Data Factory name",
-            "defaultValue": "infraadfmt"
+            "defaultValue": "infraadfmaster"
         },
         "AzureSqlDatabase1_connectionString": {
             "type": "secureString",
