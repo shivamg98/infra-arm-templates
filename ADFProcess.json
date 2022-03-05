@@ -9,7 +9,7 @@
         },
         "AzureSqlDatabase1_connectionString": {
             "type": "secureString",
-            "defaultValue": "Server=tcp:infrasetupserver12new.database.windows.net,1433;Initial Catalog=infrasetupdb;Persist Security Info=False;User ID=infrauser;Password=metro@12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+            "defaultValue": "Server=tcp:infrasetupservermastert.database.windows.net,1433;Initial Catalog=infrasetupdb;Persist Security Info=False;User ID=infrauser;Password=metro@12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
             "metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
         },
         "RestService1_properties_typeProperties_url": {
