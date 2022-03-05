@@ -5,7 +5,7 @@
         "factoryName": {
             "type": "string",
             "metadata": "Data Factory name",
-            "defaultValue": "infraad123"
+            "defaultValue": "infraadmt"
         },
         "dataFactory_location": {
             "type": "string",
