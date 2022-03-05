@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "infraadfmastert"
+            "value": "infraadfmastert1"
         },
         "AzureSqlDatabase1_connectionString": {
             "value": "Server=tcp:infrasetupservermastert.database.windows.net,1433;Initial Catalog=infrasetupdb;Persist Security Info=False;User ID=infrauser;Password=metro@12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
