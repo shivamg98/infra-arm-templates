@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "servers_infrasetupserver_name": {
-            "defaultValue": "infrasetupserver12",
+            "defaultValue": "infrasetupservermasterT",
             "type": "String"
         }
     },
