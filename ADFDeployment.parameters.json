@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "infraad123"
+            "value": "infraadmt"
         },
         "dataFactory_location": {
             "value": "eastus"
