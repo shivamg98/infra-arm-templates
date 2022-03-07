@@ -6,7 +6,7 @@
             "value": "infraadfms1"
         },
         "AzureSqlDatabase1_connectionString": {
-            "value": "Server=tcp:infrasetupservermastert1.database.windows.net,1433;Initial Catalog=infrasetupdb;Persist Security Info=False;User ID=infrauser;Password=metro@12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+            "value": "Server=tcp:infrasetupms1.database.windows.net,1433;Initial Catalog=infrasetupdb;Persist Security Info=False;User ID=infrauser;Password=metro@12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
         },
         "RestService1_properties_typeProperties_url": {
             "value": "https://prod-26.northcentralus.logic.azure.com:443/workflows/15409995172243579f7b6eb3c288381b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4-j4Mx88lW9GBOp9lW6MbC8cEbWgAavcYBsIb1GMZnQ"
